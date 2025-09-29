@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
+
 // Formulário simples em JavaScript usando apenas <div>, <input>, useState/useEffect e axios
 const CadastroProduto = () => {
+
   const [form, setForm] = useState({
     nome: "",
     tipo: "",
     precoVenda: "",
     descricao: ""
   });
+  // Estado observa a execução do botão
   const [loading, setLoading] = useState(false);
+  // Estado armazena a mensagem de sucesso ou insucesso do cadastro
   const [msg, setMsg] = useState("");
 
+  // Controla a renderização da página
+  // Troca vírgula do preço por ponto decimal
   useEffect(() => {
     if (form.precoVenda.includes(",")) {
       setForm((f) => ({ ...f, precoVenda: f.precoVenda.replace(",", ".") }));
@@ -32,6 +39,7 @@ const CadastroProduto = () => {
       descricao: form.descricao     
     };
 
+    // Crítica ou verificação do formulário
     if (!payload.nome || !payload.descricao || !payload.tipo || !payload.precoVenda) {
       setMsg("Preencha todos os campos corretamente.");
       return;
@@ -39,6 +47,7 @@ const CadastroProduto = () => {
 
     setLoading(true);
     try {
+      // POST - INSERT - cadastra os dados no servidor (banco de dados)
       axios.post("http://172.19.0.49/pizzariateste/api/v1/produto", 
         payload,
         {
